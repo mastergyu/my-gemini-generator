@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Icon Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f0f4ff, #eaf3ff);
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 760px;
+      margin: auto;
+      background: #ffffff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    h2.byline {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: normal;
+      color: #888;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1.2rem;
+      font-weight: 600;
+      color: #444;
+    }
+    input[type="text"], select, input[type="file"] {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #0077ff;
+      outline: none;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.6rem;
+      font-size: 1rem;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #005fd1;
+    }
+    .info {
+      font-size: 0.9rem;
+      color: #777;
+    }
+    #result {
+      margin-top: 2rem;
+      background: #eef6ff;
+      padding: 1.2rem;
+      border-left: 5px solid #0077ff;
+      white-space: pre-wrap;
+      border-radius: 6px;
+    }
+    .custom-input {
+      display: none;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI Icon Generator</h1>
+    <h2 class="byline">by mastergyu</h2>
+
+    <label for="keyword">Enter Keyword</label>
+    <input type="text" id="keyword" placeholder="e.g., 'space exploration', 'healthy food', 'vintage tech'" />
+    <button onclick="suggestKeyword()">✨ AI Select Idea</button>
+
+    <label><input type="checkbox" id="imageOnlyPrompt" /> Generate Prompt Based on Image Only</label>
+
+    <label for="icons">Number of Icons</label>
+    <select id="icons" onchange="toggleCustom('icons')">
+      <option>1 Icon (1x1)</option>
+      <option>2 Icons (1x2)</option>
+      <option>3 Icons (1x3)</option>
+      <option>4 Icons (2x2)</option>
+      <option>6 Icons (2x3)</option>
+      <option>9 Icons (3x3)</option>
+      <option>12 Icons (4x3)</option>
+      <option>16 Icons (4x4)</option>
+      <option>20 Icons (4x5)</option>
+      <option>25 Icons (5x5)</option>
+      <option>30 Icons (5x6)</option>
+      <option>36 Icons (6x6)</option>
+      <option>49 Icons (7x7)</option>
+      <option>64 Icons (8x8)</option>
+      <option>70 Icons (7x10)</option>
+      <option>81 Icons (9x9)</option>
+      <option>100 Icons (10x10)</option>
+      <option>Custom...</option>
+    </select>
+    <input class="custom-input" id="custom-icons" type="text" placeholder="Custom number layout" />
+
+    <label for="angle">Camera Angle / Perspective</label>
+    <select id="angle" onchange="toggleCustom('angle')">
+      <option>Top-down</option>
+      <option>Front view</option>
+      <option>Side view</option>
+      <option>Isometric</option>
+      <option>Perspective 3D</option>
+      <option>Bird-eye view</option>
+      <option>Worm-eye view</option>
+      <option>Back View</option>
+      <option>Over the Shoulder</option>
+      <option>Dynamic Tilt</option>
+      <option>Exploded View</option>
+      <option>Custom Depth Focus</option>
+      <option>Tilt-Shift Miniature</option>
+      <option>360 Orbital</option>
+      <option>Diagonal Cut</option>
+      <option>X-ray View</option>
+      <option>Cross-section</option>
+      <option>Macro Close-up</option>
+      <option>Dutch Angle</option>
+      <option>Perspective Warp</option>
+      <option>Custom...</option>
+    </select>
+    <input class="custom-input" id="custom-angle" type="text" placeholder="Custom camera angle" />
+
+    <label for="style">Icon Style</label>
+    <select id="style" onchange="toggleCustom('style')">
+      <option>Flat 3D</option>
+      <option>Pixel Art</option>
+      <option>Minimalist</option>
+      <option>Neon</option>
+      <option>Gradient Modern</option>
+      <option>Cartoonish</option>
+      <option>Metallic</option>
+      <option>Paper Cut</option>
+      <option>Photorealistic</option>
+      <option>Outline</option>
+      <option>3D Glass</option>
+      <option>Wireframe</option>
+      <option>Lineart Minimal</option>
+      <option>Skeuomorphic</option>
+      <option>Claymorphism</option>
+      <option>Isometric Pixel Art</option>
+      <option>Vector Shadows</option>
+      <option>Origami Style</option>
+      <option>Holographic</option>
+      <option>Embossed Effect</option>
+      <option>Cybernetic Steampunk</option>
+      <option>Geometric Abstraction</option>
+      <option>Pop Art</option>
+      <option>Chalkboard Doodle</option>
+      <option>Custom Isometric Realistic</option>
+      <option>Hand-drawn Marker</option>
+      <option>Digital Scribble</option>
+      <option>Bubble Style</option>
+      <option>Glitch Effect</option>
+      <option>Felt Material</option>
+      <option>Diorama</option>
+      <option>Tiny World</option>
+      <option>Custom...</option>
+    </select>
+    <input class="custom-input" id="custom-style" type="text" placeholder="Custom icon style" />
+
+    <label for="palette">Color Palette Theme</label>
+    <select id="palette" onchange="toggleCustom('palette')">
+      <option>Monochrome</option>
+      <option>Pastel</option>
+      <option>Neon (e.g. #FF00FF, #00FFFF)</option>
+      <option>Vintage (e.g. #A67C52, #D6BA73)</option>
+      <option>Nature (e.g. #4CAF50, #8BC34A)</option>
+      <option>High Contrast</option>
+      <option>Dark Mode</option>
+      <option>Warm Tones</option>
+      <option>Cool Tones</option>
+      <option>Black & Red</option>
+      <option>Gold & Brown</option>
+      <option>Blue & Orange</option>
+      <option>Sunset Gradient</option>
+      <option>Tropical Vibes</option>
+      <option>Cyberpunk (Magenta, Cyan, Yellow)</option>
+      <option>Oceanic</option>
+      <option>Forest Green</option>
+      <option>Desert Sand</option>
+      <option>Luxury (Gold, Black)</option>
+      <option>Rose Gold & Charcoal</option>
+      <option>Aqua & Coral Blend</option>
+      <option>Mint & Peach Fusion</option>
+      <option>Lavender & Lemon</option>
+      <option>Crimson & Teal</option>
+      <option>Futuristic Neon Grid</option>
+      <option>Retro 80s Palette</option>
+      <option>Muted Cinematic</option>
+      <option>Black & White</option>
+      <option>Fire & Ice</option>
+      <option>Rainbow Vibes</option>
+      <option>Custom...</option>
+    </select>
+    <input class="custom-input" id="custom-palette" type="text" placeholder="Custom palette name or hex" />
+
+    <label for="bgcanvas">Background Canvas</label>
+    <select id="bgcanvas" onchange="toggleCustom('bgcanvas')">
+      <option>White</option>
+      <option>Transparent</option>
+      <option>Gradient</option>
+      <option>Textured</option>
+      <option>Dark</option>
+      <option>Solid Color</option>
+      <option>Grid Pattern</option>
+      <option>Wood Texture</option>
+      <option>Canvas Paper</option>
+      <option>City Skyline</option>
+      <option>Abstract Blur</option>
+      <option>Floor Shadow</option>
+      <option>Cloudy Sky</option>
+      <option>Retro Wallpaper</option>
+      <option>Digital Noise</option>
+      <option>Geometric Pattern</option>
+      <option>Fantasy Forest</option>
+      <option>Marble Stone</option>
+      <option>Futuristic HUD</option>
+      <option>Transparent Overlay</option>
+      <option>Custom...</option>
+    </select>
+    <input class="custom-input" id="custom-bgcanvas" type="text" placeholder="Custom background style" />
+
+    <label for="embedtext">Embed Text (Optional)</label>
+    <input type="text" id="embedtext" placeholder="e.g., label for each icon or title" />
+
+    <button onclick="generatePrompt()">Generate Iconset Prompt & Image</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function suggestKeyword() {
+      const ideas = ['cyberpunk animals', 'retro gadgets', 'fantasy potions', 'eco transport', 'urban farming', 'mythical creatures', 'space cuisine', 'ancient technology'];
+      const random = ideas[Math.floor(Math.random() * ideas.length)];
+      document.getElementById('keyword').value = random;
+    }
+
+    function toggleCustom(id) {
+      const select = document.getElementById(id);
+      const customInput = document.getElementById(`custom-${id}`);
+      if (select.value === 'Custom...') {
+        customInput.style.display = 'block';
+      } else {
+        customInput.style.display = 'none';
+      }
+    }
+
+    function generatePrompt() {
+      const imageOnly = document.getElementById('imageOnlyPrompt').checked;
+
+      if (imageOnly) {
+        document.getElementById('result').textContent = "Transform this photo into a 3D isometric, high-quality 3D render, clean shadow, isometric perspective, with a friendly look, without background.";
+        return;
+      }
+
+      const keyword = document.getElementById('keyword').value;
+      const icons = document.getElementById('icons').value === 'Custom...' ? document.getElementById('custom-icons').value : document.getElementById('icons').value;
+      const angle = document.getElementById('angle').value === 'Custom...' ? document.getElementById('custom-angle').value : document.getElementById('angle').value;
+      const style = document.getElementById('style').value === 'Custom...' ? document.getElementById('custom-style').value : document.getElementById('style').value;
+      const palette = document.getElementById('palette').value === 'Custom...' ? document.getElementById('custom-palette').value : document.getElementById('palette').value;
+      const background = document.getElementById('bgcanvas').value === 'Custom...' ? document.getElementById('custom-bgcanvas').value : document.getElementById('bgcanvas').value;
+      const embedtext = document.getElementById('embedtext').value;
+
+      let prompt = `Generate a single image containing a collection of ${icons} themed around '${keyword}'.\nThe icons should be arranged accordingly in a grid layout.\nEach icon must be designed in a ${style} style with a ${angle} perspective.\nUse a color palette in ${palette} style.\nSet the background canvas to ${background}.`;
+
+      if (embedtext) {
+        prompt += `\nAdd embedded text: '${embedtext}' over or near each icon.`;
+      }
+
+      document.getElementById('result').textContent = prompt;
+    }
+  </script>
+</body>
+</html>
